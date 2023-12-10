@@ -7,4 +7,15 @@
     <style name="CalendarEventTextAppearance">
         <item name="android:textColor">#FF0000</item> <!-- Warna teks khusus untuk tanggal dengan acara (merah dalam hal ini) -->
     </style>
+
+    <style name="CalendarDateText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="CalendarWeekdayText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
 </resources>

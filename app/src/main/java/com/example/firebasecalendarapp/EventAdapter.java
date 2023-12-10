@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
+public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int VIEW_TYPE_EVENT = 1;
+    private static final int VIEW_TYPE_NO_EVENT = 0;
 
     private List<EventModel> eventList;
     private EventClickListener eventClickListener;
@@ -23,17 +26,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     @NonNull
     @Override
-    public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
-        return new EventViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        if (viewType == VIEW_TYPE_NO_EVENT) {
+            View view = inflater.inflate(R.layout.item_no_event, parent, false);
+            return new NullEventViewHolder(view);
+        } else {
+            View view = inflater.inflate(R.layout.item_event, parent, false);
+            return new EventViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
-        EventModel event = eventList.get(position);
-        holder.textEventName.setText(event.getEventName());
-        holder.btnEdit.setOnClickListener(v -> eventClickListener.onEditClick(position));
-        holder.btnDelete.setOnClickListener(v -> eventClickListener.onDeleteClick(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder.getItemViewType() == VIEW_TYPE_EVENT) {
+            EventModel event = eventList.get(position);
+            ((EventViewHolder) holder).textEventName.setText(event.getEventName());
+
+            ((EventViewHolder) holder).btnEdit.setOnClickListener(v -> eventClickListener.onEditClick(position));
+            ((EventViewHolder) holder).btnDelete.setOnClickListener(v -> eventClickListener.onDeleteClick(position));
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return eventList.get(position) == null ? VIEW_TYPE_NO_EVENT : VIEW_TYPE_EVENT;
     }
 
     @Override
@@ -51,6 +69,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             textEventName = itemView.findViewById(R.id.textEventName);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
+        }
+    }
+
+    public static class NullEventViewHolder extends RecyclerView.ViewHolder {
+        public NullEventViewHolder(@NonNull View itemView) {
+            super(itemView);
         }
     }
 

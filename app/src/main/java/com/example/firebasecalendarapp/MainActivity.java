@@ -80,10 +80,14 @@ public class MainActivity extends AppCompatActivity {
                             String eventKey = eventSnapshot.getKey();
                             eventList.add(new EventModel(eventKey, stringDateSelected, eventName));
                         }
-                        eventAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("FirebaseData", "Data not found for date: " + stringDateSelected);
                     }
+
+                    // Tambahkan item null jika tidak ada event
+                    if (eventList.isEmpty()) {
+                        eventList.add(null);
+                    }
+
+                    eventAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -93,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
 
     public void buttonSaveEvent(View view) {
         String eventName = editText.getText().toString();
