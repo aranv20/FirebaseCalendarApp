@@ -1,12 +1,13 @@
 package com.example.firebasecalendarapp;
 
 public class EventModel {
+
     private String eventKey;
     private String date;
     private String eventName;
 
     public EventModel() {
-        // Default constructor required for Firebase
+        // Default constructor required for DataSnapshot.getValue(EventModel.class)
     }
 
     public EventModel(String eventKey, String date, String eventName) {
@@ -25,5 +26,9 @@ public class EventModel {
 
     public String getEventName() {
         return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 }

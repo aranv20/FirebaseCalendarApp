@@ -32,8 +32,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         EventModel event = eventList.get(position);
         holder.textEventName.setText(event.getEventName());
-
-        // Set onClickListeners for edit and delete buttons
         holder.btnEdit.setOnClickListener(v -> eventClickListener.onEditClick(position));
         holder.btnDelete.setOnClickListener(v -> eventClickListener.onDeleteClick(position));
     }
@@ -56,7 +54,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         }
     }
 
-    // Interface to handle button clicks
     public interface EventClickListener {
         void onEditClick(int position);
         void onDeleteClick(int position);
