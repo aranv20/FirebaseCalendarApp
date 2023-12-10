@@ -52,12 +52,17 @@ public class MainActivity extends AppCompatActivity {
         eventAdapter = new EventAdapter(eventList, new EventAdapter.EventClickListener() {
             @Override
             public void onEditClick(int position) {
-                // Implementasi aksi saat tombol Edit diklik
+                // Implement edit action
+                // You can open a dialog or another activity for editing the event
+                // For simplicity, let's just show a log message
+                Log.d("EditEvent", "Edit button clicked for position: " + position);
             }
 
             @Override
             public void onDeleteClick(int position) {
-                // Implementasi aksi saat tombol Delete diklik
+                // Implement delete action
+                // You may want to show a confirmation dialog before deleting
+                deleteEvent(position);
             }
         });
 
@@ -77,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
                     if (snapshot.exists()) {
                         for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
                             String eventName = eventSnapshot.getValue(String.class);
-                            eventList.add(new EventModel(stringDateSelected, eventName));
+                            String eventKey = eventSnapshot.getKey();
+                            eventList.add(new EventModel(eventKey, stringDateSelected, eventName));
                         }
                         eventAdapter.notifyDataSetChanged();
                     } else {
@@ -100,10 +106,34 @@ public class MainActivity extends AppCompatActivity {
         String eventName = editText.getText().toString();
         if (!eventName.isEmpty()) {
             // Save event under the selected date
-            databaseReference.child("Event").child(stringDateSelected).push().setValue(eventName);
+            String eventKey = databaseReference.child("Event").child(stringDateSelected).push().getKey();
+            databaseReference.child("Event").child(stringDateSelected).child(eventKey).setValue(eventName);
             updateEventList(); // Update the RecyclerView after saving
         }
     }
+
+    // Method to delete an event
+    public void deleteEvent(int position) {
+        if (position >= 0 && position < eventList.size()) {
+            // Get the selected event
+            EventModel event = eventList.get(position);
+
+            // Get the key of the selected event
+            String eventKey = event.getEventKey();
+
+            // Remove the event from the list
+            eventList.remove(position);
+
+            // Notify the adapter of the change
+            eventAdapter.notifyItemRemoved(position);
+
+            // Remove the event from Firebase
+            databaseReference.child("Event").child(stringDateSelected).child(eventKey).removeValue();
+        } else {
+            Log.e("DeleteEvent", "Invalid position: " + position);
+        }
+    }
+
 
     private String formatDate(int year, int month, int day) {
         // Adjust month by adding 1, as months are zero-based in Calendar
