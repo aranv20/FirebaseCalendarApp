@@ -46,5 +46,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-messaging")
 
+    implementation ("com.squareup:android-times-square:1.6.5")
+
 
 }
