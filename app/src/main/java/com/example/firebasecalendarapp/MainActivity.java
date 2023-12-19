@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -121,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
-    // Mengambil data dari Firebase berdasarkan tanggal yang dipilih
     private void updateEventList() {
         if (stringDateSelected != null && !stringDateSelected.isEmpty()) {
             databaseReference.child("Event").child(stringDateSelected).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -132,9 +131,21 @@ public class MainActivity extends AppCompatActivity {
 
                     if (snapshot.exists()) {
                         for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
-                            String eventName = eventSnapshot.getValue(String.class);
-                            String eventKey = eventSnapshot.getKey();
-                            eventList.add(new EventModel(eventKey, stringDateSelected, eventName));
+                            // Check if the eventSnapshot is not null before processing
+                            if (eventSnapshot.getValue() != null) {
+                                String eventName = eventSnapshot.getValue(String.class);
+                                String eventKey = eventSnapshot.getKey();
+                                eventList.add(new EventModel(eventKey, stringDateSelected, eventName));
+                            }
+                        }
+                    }
+
+                    // Logging the retrieved event data
+                    for (EventModel event : eventList) {
+                        if (event != null) {
+                            Log.d("EventList", "Event: " + event.getEventName());
+                        } else {
+                            Log.d("EventList", "Null Event");
                         }
                     }
 
@@ -151,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     // Handle kesalahan saat mengambil data dari Firebase
                     Log.e("FirebaseData", "Error fetching data", error.toException());
                 }
+
             });
         }
     }
@@ -198,9 +210,14 @@ public class MainActivity extends AppCompatActivity {
 
     // Metode untuk mengecek apakah tanggal yang dipilih sesuai dengan tanggal yang sedang diedit
     private boolean isDateSelectedCorrect() {
-        // Implementasi metode
-        return true;
+        // Dapatkan tanggal yang dipilih dari CalendarView
+        long selectedDateInMillis = calendarView.getDate();
+        String selectedDate = formatDate(selectedDateInMillis);
+
+        // Bandingkan dengan tanggal yang sedang diedit
+        return selectedDate.equals(stringDateSelected);
     }
+
 
     // Memperbarui nama event di Firebase dengan konfirmasi
     private void updateEventWithConfirmation(int position, String newName) {
@@ -283,7 +300,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Mengubah format tanggal menjadi string dengan format tertentu
+    private String formatDate(long millis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millis);
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH dimulai dari 0
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        return String.format(Locale.getDefault(), "%04d%02d%02d", year, month, day);
+    }
+
+    // Metode overloaded untuk formatting int values
     private String formatDate(int year, int month, int day) {
-        return String.format(Locale.getDefault(), "%04d%02d%02d", year, month + 1, day);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        // Mengonversi tanggal ke waktu dalam milidetik
+        long millis = calendar.getTimeInMillis();
+
+        return formatDate(millis);
     }
 }
