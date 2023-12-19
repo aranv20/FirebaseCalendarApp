@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutActivity"
-    android:background="@color/white"
     android:padding="20dp">
 
     <TextView
@@ -15,7 +14,6 @@
         android:textSize="20dp"
         android:padding="8dp"
         android:layout_gravity="top"
-        android:textColor="@color/black"
         android:text="Profile Developer"/>
 
 
@@ -28,7 +26,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="4dp"
         card_view:cardCornerRadius="4dp"
-        card_view:cardBackgroundColor="@color/lavender"
         android:id="@+id/card_view">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +41,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/pro"
+                android:src="@drawable/ar"
                 card_view:layout_constraintBaseline_toBottomOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +49,6 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@id/profile_image"
@@ -71,7 +67,6 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@id/profile_image"
                 android:text="21753073"
-                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 card_view:layout_constraintEnd_toEndOf="parent"
@@ -83,11 +78,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="46dp"
+                android:layout_marginTop="48dp"
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@id/profile_image"
-                android:text="p, login epep"
-                android:textColor="@color/white"
+                android:text="Manajemen Informatika 21"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 card_view:layout_constraintEnd_toEndOf="parent"
