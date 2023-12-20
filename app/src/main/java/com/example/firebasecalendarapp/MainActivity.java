@@ -210,11 +210,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Metode untuk mengecek apakah tanggal yang dipilih sesuai dengan tanggal yang sedang diedit
     private boolean isDateSelectedCorrect() {
-        // Dapatkan tanggal yang dipilih dari CalendarView
         long selectedDateInMillis = calendarView.getDate();
         String selectedDate = formatDate(selectedDateInMillis);
 
-        // Bandingkan dengan tanggal yang sedang diedit
+        Log.d("DateCheck", "stringDateSelected: " + stringDateSelected);
+        Log.d("DateCheck", "selectedDate: " + selectedDate);
+
         return selectedDate.equals(stringDateSelected);
     }
 
